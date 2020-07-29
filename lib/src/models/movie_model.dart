@@ -69,6 +69,13 @@ class Movie {
     return "https://image.tmdb.org/t/p/w500/$posterPath";
   }
 
+  getBackgroundPath() {
+    if (posterPath == null) {
+      return "https://cdn.forbes.com.mx/2020/06/Cinema-Planeta-e1591122586874.jpg";
+    }
+    return "https://image.tmdb.org/t/p/w500/$backdropPath";
+  }
+
   getFullYear() {
     return releaseDate.substring(0, 4);
   }

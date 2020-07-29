@@ -13,7 +13,7 @@ class MovieSlider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _screenSize = MediaQuery.of(context).size;
-    
+
     _pageController.addListener(() {
       var willEnd = _pageController.position.pixels >=
           _pageController.position.maxScrollExtent - 250;
@@ -37,7 +37,57 @@ class MovieSlider extends StatelessWidget {
   }
 
   Widget _card(BuildContext context, Movie movie, screenSize) {
-    return Container(
+    final titleMovie = Container(
+      // name/title  to render in a column
+      padding: EdgeInsets.only(
+        left: 5.0,
+        top: 10.0,
+        right: 5.0,
+      ),
+      child: Text(
+        movie.title,
+        overflow: TextOverflow.ellipsis,
+        textAlign: TextAlign.left,
+        style: Theme.of(context).textTheme.bodyText2,
+      ),
+    );
+
+    final dataMovie = Padding(
+      // general info about curren movie
+      padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 3.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          Row(
+            // rate movie
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Icon(
+                Icons.star,
+                color: Colors.grey,
+                size: 18,
+              ),
+              Text(
+                "${movie.voteAverage}",
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodyText1,
+              )
+            ],
+          ),
+          Text(
+            // release year movie
+            "${movie.getFullYear()}", // method to get the full year from releaseDate
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.bodyText1,
+          ),
+        ],
+      ),
+    );
+
+    final movieCard = Container(
       width: 100.0,
       child: Column(children: <Widget>[
         Padding(
@@ -54,54 +104,16 @@ class MovieSlider extends StatelessWidget {
             ),
           ),
         ),
-        Container(
-          // name/title movie
-          padding: EdgeInsets.only(
-            left: 5.0,
-            top: 10.0,
-            right: 5.0,
-          ),
-          child: Text(
-            movie.title,
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.left,
-            style: Theme.of(context).textTheme.bodyText2,
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 3.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              Row(
-                // rate movie
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Icon(
-                    Icons.star,
-                    color: Colors.grey,
-                    size: 18,
-                  ),
-                  Text(
-                    "${movie.voteAverage}",
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.bodyText1,
-                  )
-                ],
-              ),
-              Text(
-                // release year movie
-                "${movie.getFullYear()}", // method to get the full year from releaseDate
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyText1,
-              ),
-            ],
-          ),
-        ),
+        titleMovie,
+        dataMovie,
       ]),
+    );
+
+    return GestureDetector(
+      child: movieCard,
+      onTap: () {
+        Navigator.pushNamed(context, "detail", arguments: movie);
+      },
     );
   }
 
