@@ -1,3 +1,4 @@
+import 'package:filme/src/models/actors_model.dart';
 import 'package:filme/src/models/movie_model.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -55,5 +56,30 @@ class MoviesProvider {
     popularsSink(_populars);
     _popularsLoading = false;
     return resp;
+  }
+
+  Future<List<Actor>> getCast(int movieId) async {
+    final url = Uri.https(_url, "3/movie/$movieId/credits", {
+      'api_key': _apiKey,
+      'language': _language,
+    });
+    // call to service
+    final resp = await http.get(url);
+    final decodedData = json.decode(resp.body);
+    // print(decodedData["cast"]);
+    final cast = Cast.fromJsonList(decodedData["cast"]);
+    return cast.actors;
+  }
+
+  Future<List<Movie>> searchMovie(String querySearch) async {
+    final url = Uri.https(_url, "3/search/movie", {
+      'api_key': _apiKey,
+      'language': _language,
+      "query": querySearch,
+      "page": 1.toString(),
+      // "include_adult": true.toString(),
+    });
+
+    return await _getCustomResponse(url);
   }
 }

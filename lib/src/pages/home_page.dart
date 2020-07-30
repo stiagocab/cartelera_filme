@@ -1,4 +1,5 @@
 import 'package:filme/src/models/movie_model.dart';
+import 'package:filme/src/search/search_delegate.dart';
 import 'package:filme/src/widgets/card_slider_widget.dart';
 import 'package:filme/src/widgets/card_swiper_widget.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,9 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(title: Text("Cartelera"), actions: <Widget>[
         IconButton(
           icon: Icon(Icons.search),
-          onPressed: () {},
+          onPressed: () {
+            showSearch(context: context, delegate: SearchData());
+          },
         )
       ]),
       body: SafeArea(
